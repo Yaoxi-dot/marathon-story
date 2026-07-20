@@ -1,0 +1,8 @@
+:root {
+  --paper: #fbf6ed;
+  --ink: #28445b;
+  --brick: #b8654f;
+  --font-display: "ZCOOL XiaoWei", "STKaiti", "KaiTi", "PingFang SC", serif;
+  --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}

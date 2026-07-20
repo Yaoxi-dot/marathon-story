@@ -1,0 +1,490 @@
+:root {
+  /* Overlay rail — no reserved color strip beside content */
+  --rail-w: 92px;
+  --rail-track-w: 36px;
+  /* Title chips sit ~this far left of the red track */
+  --rail-label-col: 42px;
+  /* Compact protagonist card — tucked beside labels, not into main story */
+  --vignette-w: 72px;
+  --ink: #28445b;
+  --brick: #b8654f;
+  --paper: #fbf6ed;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --font-display: "ZCOOL XiaoWei", "STKaiti", "KaiTi", "PingFang SC", serif;
+}
+
+/* Always kill chapter45 km dots — marathon rail replaces them */
+.c45-nav,
+html.ch45-in-fullstory .c45-nav {
+  display: none !important;
+}
+
+.marathon-rail {
+  position: fixed;
+  right: 0;
+  left: auto;
+  top: 0;
+  bottom: 0;
+  width: var(--rail-w);
+  z-index: 50;
+  display: grid;
+  place-items: center end;
+  padding: 20px 8px 20px 0;
+  pointer-events: none;
+  background: transparent;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(12px);
+  transition:
+    opacity 420ms var(--ease),
+    transform 420ms var(--ease),
+    visibility 0s linear 420ms;
+}
+
+body.rail-revealed .marathon-rail {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition:
+    opacity 420ms var(--ease),
+    transform 420ms var(--ease),
+    visibility 0s;
+}
+
+.marathon-rail__inner {
+  position: relative;
+  width: calc(var(--rail-w) - 10px);
+  height: min(82vh, 680px);
+  pointer-events: none;
+  background: transparent;
+}
+
+.marathon-rail__track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 2px;
+  width: var(--rail-track-w);
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+  pointer-events: none;
+  user-select: none;
+  background: transparent;
+  filter: drop-shadow(0 4px 10px rgba(40, 68, 91, 0.16));
+}
+
+.marathon-rail__runner {
+  position: absolute;
+  right: calc(2px + var(--rail-track-w) / 2);
+  top: 0;
+  width: 30px;
+  height: auto;
+  transform: translate(50%, -28%);
+  z-index: 2;
+  pointer-events: none;
+  will-change: top;
+  filter: drop-shadow(0 2px 4px rgba(40, 68, 91, 0.28));
+  transition: top 90ms linear;
+}
+
+.marathon-rail__runner.is-running {
+  animation: runner-stride 0.45s steps(2) infinite;
+}
+
+@keyframes runner-stride {
+  0%,
+  100% {
+    transform: translate(50%, -28%) rotate(-2deg);
+  }
+  50% {
+    transform: translate(50%, -32%) rotate(2deg);
+  }
+}
+
+.marathon-rail__marks {
+  position: absolute;
+  inset: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.marathon-rail__mark {
+  position: absolute;
+  right: calc(2px + var(--rail-track-w) / 2);
+  left: auto;
+  transform: translate(50%, -50%);
+  width: calc(100% - 4px);
+  height: 34px;
+}
+
+/* Whole title + dot is one clickable hit area */
+.marathon-rail__mark-hit {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.marathon-rail__mark-dot {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(50%, -50%);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow:
+    0 0 0 2px rgba(184, 101, 79, 0.55),
+    0 2px 6px rgba(40, 68, 91, 0.2);
+  transition: transform 160ms var(--ease), background 160ms var(--ease);
+}
+
+.marathon-rail__mark-hit:hover .marathon-rail__mark-dot,
+.marathon-rail__mark.is-active .marathon-rail__mark-dot {
+  background: #f3c9b4;
+  transform: translate(50%, -50%) scale(1.18);
+}
+
+.marathon-rail__mark-hit:focus-visible {
+  outline: none;
+}
+
+.marathon-rail__mark-hit:focus-visible .marathon-rail__mark-label {
+  outline: 2px solid rgba(184, 101, 79, 0.55);
+  outline-offset: 2px;
+}
+
+/* Full titles — soft chip; clickable with the hit button */
+.marathon-rail__mark-label {
+  position: absolute;
+  right: calc(var(--rail-track-w) + 10px);
+  left: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  display: block;
+  width: max-content;
+  max-width: 54px;
+  white-space: normal;
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background: rgba(255, 253, 248, 0.78);
+  border: 1px solid rgba(40, 68, 91, 0.08);
+  border-radius: 8px;
+  padding: 4px 7px;
+  opacity: 1;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(38, 56, 78, 0.05);
+  transition:
+    color 160ms var(--ease),
+    border-color 160ms var(--ease),
+    background 160ms var(--ease);
+}
+
+.marathon-rail__mark-hit:hover .marathon-rail__mark-label,
+.marathon-rail__mark.is-active .marathon-rail__mark-label {
+  color: var(--brick);
+  border-color: rgba(184, 101, 79, 0.32);
+  background: rgba(255, 248, 242, 0.92);
+  font-weight: 600;
+}
+
+.stage-vignette {
+  position: fixed;
+  display: none;
+  /* Sit just left of title chips (track + labels), not a full rail-width away */
+  right: calc(var(--rail-track-w) + var(--rail-label-col) + 6px);
+  left: auto;
+  bottom: 16px;
+  z-index: 47;
+  width: var(--vignette-w);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity 400ms var(--ease),
+    transform 400ms var(--ease),
+    visibility 0s linear 400ms;
+}
+
+body.rail-revealed .stage-vignette.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 400ms var(--ease),
+    transform 400ms var(--ease),
+    visibility 0s;
+}
+
+.stage-vignette__card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 253, 248, 0.78);
+  border: 1px solid rgba(40, 68, 91, 0.1);
+  box-shadow: 0 8px 18px rgba(38, 56, 78, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.stage-vignette__img {
+  display: block;
+  width: 100%;
+  height: 64px;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.stage-vignette__label {
+  margin: 0;
+  padding: 4px 6px 6px;
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.stage-vignette__eyebrow {
+  display: block;
+  margin-bottom: 1px;
+  font-family: system-ui, sans-serif;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--brick);
+}
+
+/* No reserved padding strip — content stays full-bleed under the overlay rail */
+body.has-marathon-rail {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.boot-hint {
+  position: fixed;
+  left: 16px;
+  right: auto;
+  bottom: 16px;
+  z-index: 60;
+  max-width: 240px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(40, 68, 91, 0.88);
+  color: #fbf6ed;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms var(--ease);
+}
+
+.boot-hint.is-visible {
+  opacity: 1;
+}
+
+html.ch45-in-fullstory #chapter45-root,
+html.ch45-in-fullstory .c45-story {
+  width: min(1080px, calc(100vw - 48px)) !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Chapter 3 title stays optically centered in the full viewport */
+body.has-marathon-rail .story-chapter--chapter3 .chapter-head {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.has-marathon-rail .story-chapter--chapter3 .chapter-head h1,
+body.has-marathon-rail .story-chapter--chapter3 .chapter-head .lead,
+body.has-marathon-rail .story-chapter--chapter3 .chapter-head .eyebrow {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.story-chapter--chapter3 .chapter-head h1 {
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --rail-w: 86px;
+    --rail-track-w: 32px;
+    --rail-label-col: 38px;
+    --vignette-w: 68px;
+  }
+
+  .marathon-rail__mark-label {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --rail-w: 78px;
+    --rail-track-w: 28px;
+    --rail-label-col: 34px;
+    --vignette-w: 64px;
+  }
+
+  .marathon-rail__runner {
+    width: 26px;
+  }
+
+  .marathon-rail__mark-label {
+    font-size: 9px;
+  }
+
+  .stage-vignette__img {
+    height: 56px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --rail-w: 0px;
+    --vignette-w: 84px;
+  }
+
+  body.has-marathon-rail {
+    padding-right: 0;
+    padding-bottom: 0;
+  }
+
+  body.rail-revealed.has-marathon-rail {
+    padding-bottom: 88px;
+  }
+
+  body.has-marathon-rail .story-chapter--chapter3 .chapter-head {
+    left: 0;
+  }
+
+  .marathon-rail {
+    top: auto;
+    right: 0;
+    left: 0;
+    height: 86px;
+    width: 100%;
+    place-items: end center;
+    padding: 0 8px 10px;
+    background: linear-gradient(180deg, transparent, rgba(251, 246, 237, 0.88));
+    transform: translateY(16px);
+  }
+
+  body.rail-revealed .marathon-rail {
+    transform: translateY(0);
+  }
+
+  .marathon-rail__inner {
+    width: min(96vw, 520px);
+    height: 64px;
+  }
+
+  .marathon-rail__track {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 28px;
+    transform: none;
+    object-fit: cover;
+  }
+
+  .marathon-rail__runner {
+    top: auto !important;
+    bottom: 2px;
+    right: auto;
+    left: 0;
+    width: 28px;
+    transform: translate(-30%, 0);
+    transition: left 90ms linear;
+  }
+
+  .marathon-rail__runner.is-running {
+    animation: none;
+  }
+
+  .marathon-rail__mark {
+    top: auto !important;
+    bottom: 8px;
+    right: auto;
+    left: 0;
+    transform: translate(-50%, 0);
+    width: 72px;
+    height: 48px;
+  }
+
+  .marathon-rail__mark-dot {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    transform: translate(-50%, 0);
+  }
+
+  .marathon-rail__mark-hit:hover .marathon-rail__mark-dot,
+  .marathon-rail__mark.is-active .marathon-rail__mark-dot {
+    transform: translate(-50%, 0) scale(1.18);
+  }
+
+  .marathon-rail__mark-label {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: 16px;
+    transform: translate(-50%, 0);
+    white-space: nowrap;
+    text-align: center;
+    max-width: 72px;
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+
+  .stage-vignette {
+    right: 10px;
+    bottom: 92px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marathon-rail__runner.is-running {
+    animation: none;
+  }
+
+  .marathon-rail,
+  .marathon-rail__runner,
+  .stage-vignette {
+    transition: none;
+  }
+}

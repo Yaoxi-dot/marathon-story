@@ -1,0 +1,389 @@
+<section id="advisor-section" class="advisor-section" aria-label="AI入场报告">
+  <div class="page">
+    <section id="mobile-advisor" class="mobile-advisor-section">
+      <div class="container mobile-advisor-layout">
+        <header class="chapter-head ma-intro">
+          <h1>六、我的<em>入场报告</em></h1>
+          <p class="lead">前面的数据讲的是大家的马拉松，这一次，我们看看你的马拉松。</p>
+        </header>
+
+        <!-- 小教练在手机上方 -->
+        <div class="ma-coach-above">
+          <img src="./assets/advisor/robot-coach.png" alt="小教练" class="ma-coach-img floaty" width="96" height="96" />
+          <div class="ma-speech">
+            <strong>小教练：</strong>别急着报名，先看看你在哪一站。
+          </div>
+        </div>
+
+        <!-- 手机居中 -->
+        <div class="ma-phone-stage">
+          <div class="ma-phone-shell" id="maPhone">
+            <span class="ma-side-btn ma-side-btn-1" aria-hidden="true"></span>
+            <span class="ma-side-btn ma-side-btn-2" aria-hidden="true"></span>
+
+            <div class="ma-phone-top" aria-hidden="true">
+              <div class="ma-ear"></div>
+              <div class="ma-bezel-deco ma-bezel-deco-top">
+                <img src="./assets/advisor/icons/icon-map.png" alt="" />
+                <img src="./assets/advisor/icons/icon-shoe.png" alt="" />
+              </div>
+            </div>
+
+            <div class="ma-phone-screen" id="maScreen">
+              <div class="ma-progress" aria-hidden="true">
+                <span class="ma-progress-fill" id="maProgressFill"></span>
+              </div>
+
+              <!-- Step 1 -->
+              <div class="ma-step is-active" data-step="1" id="maStep1">
+                <div class="ma-step-inner">
+                  <img src="./assets/advisor/robot-coach.png" alt="" class="ma-welcome-avatar floaty" width="72" height="72" />
+                  <h2 class="ma-step-title">AI跑马顾问</h2>
+                  <p class="ma-step-sub">你的42.195公里入场报告</p>
+                  <p class="ma-step-copy">不是每个人都要立刻跑全马，但每个人都可以找到适合自己的起跑方式。</p>
+                  <button type="button" class="ma-btn ma-btn-primary" data-ma-action="start">开始测一测</button>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="ma-step" data-step="2" id="maStep2" hidden>
+                <div class="ma-step-inner ma-step-scroll">
+                  <h2 class="ma-step-title ma-step-title-sm">快速建档</h2>
+                  <p class="ma-step-hint">先答 6 个核心问题；细节可点「展开更多信息」补充。</p>
+
+                  <div class="ma-q" data-field="running">
+                    <p class="ma-q-label">1. 跑步基础？</p>
+                    <div class="ma-opts">
+                      <button type="button" class="ma-opt" data-value="never">从没系统跑过</button>
+                      <button type="button" class="ma-opt" data-value="occasional">偶尔跑</button>
+                      <button type="button" class="ma-opt" data-value="stable">稳定训练</button>
+                      <button type="button" class="ma-opt" data-value="experienced">有半马或全马经验</button>
+                    </div>
+                  </div>
+
+                  <div class="ma-q" data-field="recentRace">
+                    <p class="ma-q-label">2. 最近测过成绩吗？<span class="ma-label-hint">可选</span></p>
+                    <div class="ma-opts">
+                      <button type="button" class="ma-opt" data-value="none">没测过</button>
+                      <button type="button" class="ma-opt" data-value="5k">5K</button>
+                      <button type="button" class="ma-opt" data-value="10k">10K</button>
+                    </div>
+                    <div class="ma-time-input" id="maTimeWrap" hidden>
+                      <label for="maRaceTime">成绩 <span class="ma-label-hint">如 28:30 或 1:02:00</span></label>
+                      <input id="maRaceTime" type="text" placeholder="mm:ss 或 h:mm:ss" autocomplete="off" />
+                      <p class="ma-inline-hint" id="maTimeHint" hidden></p>
+                    </div>
+                  </div>
+
+                  <div class="ma-q" data-field="weeklyTime">
+                    <p class="ma-q-label">3. 每周可训练时间？</p>
+                    <div class="ma-opts">
+                      <button type="button" class="ma-opt" data-value="1-2">1–2小时</button>
+                      <button type="button" class="ma-opt" data-value="3-4">3–4小时</button>
+                      <button type="button" class="ma-opt" data-value="5-7">5–7小时</button>
+                      <button type="button" class="ma-opt" data-value="8+">8小时以上</button>
+                    </div>
+                  </div>
+
+                  <div class="ma-q" data-field="injury">
+                    <p class="ma-q-label">4. 现在有伤病或不适吗？</p>
+                    <div class="ma-opts">
+                      <button type="button" class="ma-opt" data-value="none">没有</button>
+                      <button type="button" class="ma-opt" data-value="mild">偶尔不适</button>
+                      <button type="button" class="ma-opt" data-value="injured">正在受伤或恢复中</button>
+                    </div>
+                  </div>
+
+                  <div class="ma-q" data-field="goal">
+                    <p class="ma-q-label">5. 你的目标？</p>
+                    <div class="ma-opts ma-opts-wrap">
+                      <button type="button" class="ma-opt" data-value="10k">先从10K开始</button>
+                      <button type="button" class="ma-opt" data-value="half">半马过渡</button>
+                      <button type="button" class="ma-opt" data-value="full">全马完赛</button>
+                      <button type="button" class="ma-opt" data-value="sub5">破5</button>
+                      <button type="button" class="ma-opt" data-value="sub4">破4</button>
+                    </div>
+                  </div>
+
+                  <div class="ma-q" data-field="budget">
+                    <p class="ma-q-label">6. 预算？</p>
+                    <div class="ma-opts">
+                      <button type="button" class="ma-opt" data-value="500">500元以内</button>
+                      <button type="button" class="ma-opt" data-value="2000">2000元以内</button>
+                      <button type="button" class="ma-opt" data-value="5000">5000元以上</button>
+                    </div>
+                  </div>
+
+                  <div class="ma-more" id="maMore" hidden>
+                    <p class="ma-more-title">更多信息（选填，越具体建议越准）</p>
+
+                    <div class="ma-q ma-q-inputs">
+                      <p class="ma-q-label">基础信息</p>
+                      <div class="ma-input-row">
+                        <input id="maAge" type="number" class="ma-text-input" min="12" max="85" placeholder="年龄" />
+                        <select id="maGender" class="ma-text-input">
+                          <option value="">性别</option>
+                          <option value="女">女</option>
+                          <option value="男">男</option>
+                          <option value="其他">不便透露</option>
+                        </select>
+                      </div>
+                      <input id="maCity" type="text" class="ma-text-input" placeholder="所在城市，如：广州" />
+                    </div>
+
+                    <div class="ma-q" data-field="weeklyKm">
+                      <p class="ma-q-label">近4周平均周跑量</p>
+                      <div class="ma-opts ma-opts-wrap">
+                        <button type="button" class="ma-opt" data-value="0-5">0–5km</button>
+                        <button type="button" class="ma-opt" data-value="6-15">6–15km</button>
+                        <button type="button" class="ma-opt" data-value="16-30">16–30km</button>
+                        <button type="button" class="ma-opt" data-value="31-45">31–45km</button>
+                        <button type="button" class="ma-opt" data-value="45+">45km以上</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q" data-field="longest">
+                      <p class="ma-q-label">近4周最长单次距离</p>
+                      <div class="ma-opts ma-opts-wrap">
+                        <button type="button" class="ma-opt" data-value="lt3">3km以内</button>
+                        <button type="button" class="ma-opt" data-value="3-5">3–5km</button>
+                        <button type="button" class="ma-opt" data-value="6-10">6–10km</button>
+                        <button type="button" class="ma-opt" data-value="11-16">11–16km</button>
+                        <button type="button" class="ma-opt" data-value="17-24">17–24km</button>
+                        <button type="button" class="ma-opt" data-value="25+">25km以上</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q ma-q-inputs">
+                      <p class="ma-q-label">近期成绩（可补填）</p>
+                      <label class="ma-mini-label">5K <span class="ma-label-hint">如 28:30</span>
+                        <input id="maTime5k" type="text" class="ma-text-input" placeholder="mm:ss" />
+                      </label>
+                      <label class="ma-mini-label">10K <span class="ma-label-hint">如 58:00</span>
+                        <input id="maTime10k" type="text" class="ma-text-input" placeholder="mm:ss 或 h:mm:ss" />
+                      </label>
+                    </div>
+
+                    <div class="ma-q" data-field="injurySite" id="maInjurySiteQ" hidden>
+                      <p class="ma-q-label">不适部位</p>
+                      <div class="ma-opts ma-opts-wrap">
+                        <button type="button" class="ma-opt" data-value="knee">膝盖</button>
+                        <button type="button" class="ma-opt" data-value="ankle">脚踝</button>
+                        <button type="button" class="ma-opt" data-value="calf">小腿</button>
+                        <button type="button" class="ma-opt" data-value="foot">足底</button>
+                        <button type="button" class="ma-opt" data-value="hip">髋部</button>
+                        <button type="button" class="ma-opt" data-value="back">腰背</button>
+                        <button type="button" class="ma-opt" data-value="other">其他</button>
+                        <button type="button" class="ma-opt" data-value="none">无</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q" data-field="redFlag">
+                      <p class="ma-q-label">是否有红旗症状？</p>
+                      <p class="ma-field-note">含运动中/后胸痛、胸闷、异常气短、头晕、晕厥、心悸、异常疲劳等。</p>
+                      <div class="ma-opts">
+                        <button type="button" class="ma-opt" data-value="no">没有</button>
+                        <button type="button" class="ma-opt" data-value="unsure">有过但不确定</button>
+                        <button type="button" class="ma-opt" data-value="yes">近期出现过</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q" data-field="recovery">
+                      <p class="ma-q-label">恢复状态</p>
+                      <div class="ma-opts">
+                        <button type="button" class="ma-opt" data-value="good">睡眠好、精神好</button>
+                        <button type="button" class="ma-opt" data-value="normal">一般</button>
+                        <button type="button" class="ma-opt" data-value="poor">最近很累</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q" data-field="dieting">
+                      <p class="ma-q-label">是否正在明显节食或减重？</p>
+                      <div class="ma-opts">
+                        <button type="button" class="ma-opt" data-value="no">否</button>
+                        <button type="button" class="ma-opt" data-value="yes">是</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q" data-field="targetWeeks">
+                      <p class="ma-q-label">目标周期</p>
+                      <div class="ma-opts ma-opts-wrap">
+                        <button type="button" class="ma-opt" data-value="8">8周内</button>
+                        <button type="button" class="ma-opt" data-value="12">12周内</button>
+                        <button type="button" class="ma-opt" data-value="16">16周内</button>
+                        <button type="button" class="ma-opt" data-value="26">半年内</button>
+                        <button type="button" class="ma-opt" data-value="flexible">不着急</button>
+                      </div>
+                    </div>
+
+                    <div class="ma-q" data-field="racePref">
+                      <p class="ma-q-label">赛事偏好</p>
+                      <div class="ma-opts ma-opts-wrap">
+                        <button type="button" class="ma-opt" data-value="local">本地赛事</button>
+                        <button type="button" class="ma-opt" data-value="small">小城赛事</button>
+                        <button type="button" class="ma-opt" data-value="travel">旅游型赛事</button>
+                        <button type="button" class="ma-opt" data-value="major">头部赛事</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="ma-actions">
+                    <button type="button" class="ma-btn ma-btn-primary" data-ma-action="generate">生成我的报告</button>
+                    <button type="button" class="ma-btn ma-btn-ghost" data-ma-action="toggle-more" id="maToggleMore">展开更多信息</button>
+                  </div>
+                  <p class="ma-form-error" id="maFormError" hidden>请先完成上面 6 个核心问题～</p>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="ma-step" data-step="3" id="maStep3" hidden>
+                <div class="ma-step-inner ma-generating">
+                  <img src="./assets/advisor/robot-coach.png" alt="" class="ma-gen-coach floaty" width="64" height="64" />
+                  <ul class="ma-gen-msgs" id="maGenMsgs" aria-live="polite">
+                    <li>正在评估你的起点……</li>
+                    <li>正在匹配赛事门槛……</li>
+                    <li>正在计算预算与风险……</li>
+                    <li>正在生成入场报告……</li>
+                  </ul>
+                  <svg class="ma-route-svg" viewBox="0 0 260 80" aria-hidden="true">
+                    <text x="8" y="58" class="ma-route-label">5K</text>
+                    <text x="70" y="28" class="ma-route-label">10K</text>
+                    <text x="140" y="48" class="ma-route-label">半马</text>
+                    <text x="210" y="22" class="ma-route-label">42.195</text>
+                    <path id="maRoutePath" class="ma-route-path"
+                      d="M18 50 C 50 50, 60 20, 90 22 S 130 55, 160 42 S 200 18, 240 20"
+                      fill="none" stroke="#E66A45" stroke-width="3.5" stroke-linecap="round" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="ma-step" data-step="4" id="maStep4" hidden>
+                <div class="ma-step-inner ma-step-scroll">
+                  <p class="ma-result-eyebrow">一眼看懂</p>
+                  <p class="ma-result-lead">你目前更适合：</p>
+                  <h2 class="ma-result-verdict" id="maVerdict">—</h2>
+                  <div class="ma-result-meta ma-result-meta-4">
+                    <div><span>当前阶段</span><b id="maStage">—</b></div>
+                    <div><span>准备度评分</span><b id="maScore">—</b></div>
+                    <div><span>风险等级</span><b id="maRisk">—</b></div>
+                    <div><span>报名建议</span><b id="maSignup">—</b></div>
+                  </div>
+                  <div class="ma-mini-cards">
+                    <article class="ma-mini-card">
+                      <h3>赛事</h3>
+                      <p id="maCardRace">—</p>
+                    </article>
+                    <article class="ma-mini-card">
+                      <h3>训练</h3>
+                      <p id="maCardTrain">—</p>
+                    </article>
+                    <article class="ma-mini-card">
+                      <h3>风险</h3>
+                      <p id="maCardRisk">—</p>
+                    </article>
+                  </div>
+                  <div class="ma-actions">
+                    <button type="button" class="ma-btn ma-btn-primary" data-ma-action="open-report">查看完整建议</button>
+                    <button type="button" class="ma-btn ma-btn-ghost" data-ma-action="download">下载报告</button>
+                    <button type="button" class="ma-btn ma-btn-ghost" data-ma-action="restart">重新测一遍</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ma-phone-bottom" aria-hidden="true">
+              <div class="ma-bezel-deco ma-bezel-deco-bottom">
+                <img src="./assets/advisor/icons/icon-bib.png" alt="" />
+                <img src="./assets/advisor/icons/icon-heart.png" alt="" />
+              </div>
+              <div class="ma-home"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 完整报告抽屉 -->
+      <div class="container">
+        <div class="ma-report-drawer" id="maReportDrawer" hidden>
+          <div class="ma-a4-wrap">
+            <article class="ma-a4-sheet" id="maA4Sheet">
+              <header class="ma-a4-letterhead">
+                <div class="ma-a4-brand">
+                  <img src="./assets/advisor/robot-coach.png" alt="" width="44" height="44" />
+                  <div>
+                    <p class="ma-a4-org">AI跑马顾问 · 入场评估</p>
+                    <h2>我的42.195公里入场报告</h2>
+                  </div>
+                </div>
+                <div class="ma-a4-meta">
+                  <span>文档类型：个人入场建议</span>
+                  <span id="maA4Date"></span>
+                </div>
+              </header>
+              <div class="ma-a4-rule"></div>
+              <p class="ma-a4-summary" id="maA4Summary"></p>
+              <div class="ma-a4-tags" id="maA4Tags"></div>
+              <div class="ma-report-grid" id="maReportGrid"></div>
+              <div class="ma-a4-modules" id="maA4Modules"></div>
+              <footer class="ma-a4-footnote" id="maA4Footnote">
+                本报告基于你填写的基础信息生成，仅供大众运动参考，不能替代医生或专业教练意见。
+              </footer>
+            </article>
+            <div class="ma-report-actions">
+              <button type="button" class="btn btn-primary" data-ma-action="download">下载我的入场报告</button>
+              <button type="button" class="btn btn-ghost" data-ma-action="collapse-report">收起报告</button>
+              <button type="button" class="btn btn-ghost" data-ma-action="restart">重新测一遍</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ending" class="ending-section" aria-labelledby="ending-title">
+      <div class="container">
+        <header class="chapter-head">
+          <h1 id="ending-title">七、重新定义<em>参赛</em></h1>
+          <p class="lead">数据告诉我们马拉松有多难，但数据没有告诉你的是——意义该如何被重新安放。</p>
+        </header>
+
+        <ul class="ending-pillars" aria-label="重新定义的五个方向">
+          <li>接纳「不中签」是<em>常态</em></li>
+          <li>重新定义「参赛」的<em>意义</em></li>
+          <li>让消费回归功能，让社交回归<em>真诚</em></li>
+          <li>把「与自己的对话」放在「与别人的赛跑」<em>之前</em></li>
+          <li>把「坚持」重新定义为「懂得何时<em>停下</em>」</li>
+        </ul>
+
+        <div class="ending-body">
+          <p class="ending-verse">
+            中签难，所以每一次站上起跑线都值得珍惜；<br />
+            跨城远，所以每一场奔赴都自带仪式感；<br />
+            消费高，但决定你完赛的不是鞋，是腿；<br />
+            破三卷，但马拉松的意义不在成绩单上；<br />
+            伤病多，所以懂得停下比咬牙坚持更勇敢。
+          </p>
+
+          <p class="ending-reveal">
+            数据告诉我们马拉松有多难，但数据没有告诉你的是：
+          </p>
+          <p class="ending-key">
+            这42.195公里，是你与自己的<em>对话</em>，不是与别人的竞赛。<br />
+            516公里的奔赴，是为了遇见更好的自己，而不是成为别人眼中的「跑者」。
+          </p>
+
+          <blockquote class="ending-quote">
+            <p>「以前只能听到自己沉重的呼吸声，慢下来之后，能听到风吹落叶，飞鸟在身旁扇动翅膀的声音。」</p>
+            <cite>——北京通州绿心森林公园，一位中年跑者</cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      本模块为本地互动 Demo，不替代医生或专业教练建议。
+    </footer>
+  </div>
+
+  
+</section>
