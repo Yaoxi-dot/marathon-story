@@ -1435,7 +1435,7 @@ function createChapter2(chapter, data, chinaGeoJson) {
 
 function initChapter3() {
 
-      const ICON = "./assets/chapter3/receipt-icons";
+      const ICON = "assets/chapter3/receipt-icons";
 
       const HARD_ITEMS = [
         { icon: "hard-shoes.png", name: "跑鞋", note: "性价比→碳板款", price: "¥300 – 3,000+" },
