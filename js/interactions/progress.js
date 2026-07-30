@@ -188,7 +188,7 @@
     if (!vignette || !m || !revealed) return;
     if (m.id !== activeId) {
       activeId = m.id;
-      if (vignetteImg) { vignetteImg.src = m.image; vignetteImg.alt = m.label; }
+      if (vignetteImg && vignetteImg.getAttribute('src') !== m.image) { vignetteImg.decoding = 'async'; vignetteImg.loading = 'eager'; vignetteImg.src = m.image; vignetteImg.alt = m.label; }
       if (vignetteEyebrow) vignetteEyebrow.textContent = '此刻 · 主人公';
       if (vignetteLabel) vignetteLabel.textContent = m.label;
       Array.prototype.forEach.call(document.querySelectorAll('.marathon-rail__mark'), function (el) {

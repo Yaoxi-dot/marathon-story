@@ -54,7 +54,7 @@ function createInformationFlow(titles) {
   layer.setAttribute('aria-hidden', 'true');
 
   const safeTitles = titles.length ? titles : ['马拉松'];
-  const count = Math.min(180, Math.max(80, safeTitles.length));
+  const count = Math.min(42, Math.max(18, Math.min(safeTitles.length || 18, 42)));
   for (let index = 0; index < count; index += 1) {
     const pick = Math.floor(seededRandom(index + 31) * safeTitles.length);
     const item = document.createElement('span');
@@ -1462,7 +1462,7 @@ function initChapter3() {
         el.innerHTML = items.map(function (it) {
           return (
             '<div class="receipt-item">' +
-              '<div class="item-icon"><img src="' + ICON + '/' + it.icon + '" alt="' + it.name + '" loading="lazy" /></div>' +
+              '<div class="item-icon"><img src="' + ICON + '/' + it.icon + '" alt="' + it.name + '" loading="lazy" decoding="async" width="44" height="44" /></div>' +
               '<div class="item-name">' + it.name + '<small>' + it.note + '</small></div>' +
               '<div class="item-price">' + it.price + '</div>' +
             '</div>'
@@ -1609,7 +1609,7 @@ function initChapter3() {
         calcList.innerHTML = data.items.map(function (it) {
           return (
             '<div class="calc-item">' +
-              '<div class="item-icon"><img src="' + ICON + '/' + it.icon + '" alt="' + it.name + '" /></div>' +
+              '<div class="item-icon"><img src="' + ICON + '/' + it.icon + '" alt="' + it.name + '" loading="lazy" decoding="async" width="44" height="44" /></div>' +
               '<div class="item-name">' + it.name + '<small>' + it.note + '</small></div>' +
               '<div class="item-price">' + formatYen(it.price) + '</div>' +
             '</div>'
@@ -1873,7 +1873,7 @@ function createChapter3(chapter) {
           <div class="calc-align-spacer" aria-hidden="true"></div>
 
           <div class="cute-calc" id="cuteCalc">
-            <img class="cute-calc-img" src="./assets/chapter3/calculator-cute-blank.png" alt="手绘计算器" width="280" height="292" />
+            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.png" loading="lazy" decoding="async" alt="手绘计算器" width="280" height="292" />
             <div class="calc-screen-overlay">
               <div class="calc-screen-label">TOTAL</div>
               <p class="calc-idle-face-msg" id="calcIdleFace">点左边层级<br>算出花费</p>
@@ -1936,9 +1936,6 @@ function observeStorySections(root) {
     cover.style.setProperty('--cover-progress', progress.toFixed(3));
   }
 
-  updateCover();
-  window.addEventListener('scroll', updateCover, { passive: true });
-
   const phoneSection = root.querySelector('.story-chapter--phone');
   function updatePhone() {
     if (!phoneSection) return;
@@ -1950,8 +1947,10 @@ function observeStorySections(root) {
     let beat = 'idle';
     if (progress >= 0.84) beat = 'vow';
     else if (progress >= 0.55) beat = 'chart';
-    phoneSection.dataset.phoneBeat = beat;
-    phoneSection.classList.toggle('is-settling', beat !== 'idle');
+    if (phoneSection.dataset.phoneBeat !== beat) {
+      phoneSection.dataset.phoneBeat = beat;
+      phoneSection.classList.toggle('is-settling', beat !== 'idle');
+    }
 
     const ctrl = phoneSection.phoneController;
     if (ctrl) {
@@ -1959,8 +1958,18 @@ function observeStorySections(root) {
       if (beat === 'idle' && progress < 0.45) ctrl.resetChart();
     }
   }
-  updatePhone();
-  window.addEventListener('scroll', updatePhone, { passive: true });
+
+  let storyScrollFrame = 0;
+  function onStoryScroll() {
+    storyScrollFrame = 0;
+    updateCover();
+    updatePhone();
+  }
+  function requestStoryScroll() {
+    if (!storyScrollFrame) storyScrollFrame = window.requestAnimationFrame(onStoryScroll);
+  }
+  onStoryScroll();
+  window.addEventListener('scroll', requestStoryScroll, { passive: true });
 
   const chapter1 = root.querySelector('.story-chapter--chapter1');
   let chapter1Frame = 0;
