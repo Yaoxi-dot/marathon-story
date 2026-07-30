@@ -1435,8 +1435,14 @@ function createChapter2(chapter, data, chinaGeoJson) {
 
 function initChapter3() {
 
-      const ICON = new URL("assets/chapter3/receipt-icons/", document.baseURI).href.replace(/\/$/, "");
-      const CALC_IMG = new URL("assets/chapter3/calculator-cute-blank.png", document.baseURI).href;
+      function chapter3Asset(rel) {
+        try {
+          return new URL(rel, document.baseURI).href;
+        } catch (e) {
+          return rel;
+        }
+      }
+      const ICON = chapter3Asset("assets/chapter3/receipt-icons").replace(/\/$/, "");
 
       const HARD_ITEMS = [
         { icon: "hard-shoes.png", name: "跑鞋", note: "性价比→碳板款", price: "¥300 – 3,000+" },
@@ -1473,8 +1479,6 @@ function initChapter3() {
 
       renderList(document.getElementById("hardList"), HARD_ITEMS);
       renderList(document.getElementById("softList"), SOFT_ITEMS);
-      const calcImgEl = document.querySelector("#cuteCalc .cute-calc-img");
-      if (calcImgEl) calcImgEl.src = CALC_IMG;
 
       function bindStation(stationId, btnId, receiptId) {
         const station = document.getElementById(stationId);
@@ -1876,7 +1880,7 @@ function createChapter3(chapter) {
           <div class="calc-align-spacer" aria-hidden="true"></div>
 
           <div class="cute-calc" id="cuteCalc">
-            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.png" decoding="async" alt="手绘计算器" width="280" height="292" />
+            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.jpg" alt="手绘计算器" width="280" height="292" decoding="async" fetchpriority="low" />
             <div class="calc-screen-overlay">
               <div class="calc-screen-label">TOTAL</div>
               <p class="calc-idle-face-msg" id="calcIdleFace">点左边层级<br>算出花费</p>
@@ -1892,6 +1896,22 @@ function createChapter3(chapter) {
       </div>
     </div>
   `;
+  const calcImg = section.querySelector("#cuteCalc .cute-calc-img, .cute-calc-img");
+  if (calcImg) {
+    try {
+      calcImg.src = new URL("assets/chapter3/calculator-cute-blank.jpg", document.baseURI).href;
+    } catch (e) {
+      calcImg.src = "assets/chapter3/calculator-cute-blank.jpg";
+    }
+    calcImg.addEventListener("error", function onCalcErr() {
+      calcImg.removeEventListener("error", onCalcErr);
+      try {
+        calcImg.src = new URL("assets/chapter3/calculator-cute-blank.png", document.baseURI).href;
+      } catch (err) {
+        calcImg.src = "assets/chapter3/calculator-cute-blank.png";
+      }
+    });
+  }
   queueMicrotask(() => initChapter3());
   return section;
 }

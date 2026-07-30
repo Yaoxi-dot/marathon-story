@@ -2300,6 +2300,8 @@ body::before {
       pointer-events: none;
       user-select: none;
       min-height: 180px;
+      opacity: 1;
+      visibility: visible;
       background: rgba(250,247,240,.65);
     }
     .story-chapter--chapter3 .calc-screen-overlay{
