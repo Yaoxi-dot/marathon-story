@@ -2079,7 +2079,7 @@ function observeStorySections(root) {
       ? (cb) => window.requestIdleCallback(cb, { timeout: 1800 })
       : (cb) => window.setTimeout(cb, 400);
     scheduleIdle(() => {
-      loadScriptOnce('./js/data/video-titles.js')
+      loadScriptOnce('js/data/video-titles.js')
         .then(() => {
           VIDEO_TITLES = window.VIDEO_TITLES || VIDEO_TITLES || [];
           refreshPhoneTitles(VIDEO_TITLES);

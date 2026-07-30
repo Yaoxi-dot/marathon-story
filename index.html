@@ -6,41 +6,48 @@
   <meta name="description" content="跑一场马拉松到底有多难：数据看中国新兴运动的入场门槛（纯静态本地版）" />
   <title>跑一场马拉松到底有多难</title>
   <script>
-    /* GitHub Pages 项目页：补上末尾 /，避免 ./assets 解析到仓库外 */
+    /* 固定资源根路径：GitHub Pages 在无末尾 / 时，./assets 会错误解析到站点根目录 */
     (function () {
       if (location.protocol === 'file:') return;
-      var path = location.pathname;
-      if (/\/index\.html?$/i.test(path)) return;
-      if (!path.endsWith('/') && !/\.[a-z0-9]+$/i.test(path.split('/').pop() || '')) {
-        location.replace(path + '/' + location.search + location.hash);
+      var path = location.pathname || '/';
+      var base = '/marathon-story/';
+      var marker = '/marathon-story';
+      var idx = path.indexOf(marker);
+      if (idx >= 0) {
+        base = path.slice(0, idx) + marker + '/';
+      } else if (path.endsWith('/')) {
+        base = path;
+      } else {
+        base = path.replace(/\/[^\/]*$/, '/') || '/';
       }
+      document.write('<base href="' + base + '">');
     })();
   </script>
-  <link rel="preload" as="image" href="./assets/images/1.png" fetchpriority="high" />
-  <link rel="preload" as="image" href="./assets/images/3.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/images/1.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/images/3.jpg" fetchpriority="high" />
   <!-- 离线字体：恢复同步加载，保证标题字体立刻可用 -->
-  <link rel="stylesheet" href="./css/fonts.css" />
-  <link rel="stylesheet" href="./css/tokens.css" />
-  <link rel="stylesheet" href="./css/base.css" />
-  <link rel="stylesheet" href="./css/story.css" />
-  <link rel="stylesheet" href="./css/chapter45.css" />
-  <link rel="stylesheet" href="./css/advisor.css" />
-  <link rel="stylesheet" href="./css/progress.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/story.css" />
+  <link rel="stylesheet" href="css/chapter45.css" />
+  <link rel="stylesheet" href="css/advisor.css" />
+  <link rel="stylesheet" href="css/progress.css" />
 </head>
 <body>
   <a class="skip-link" href="#story">跳到正文</a>
 
   <aside class="marathon-rail" aria-label="马拉松进度跑道">
     <div class="marathon-rail__inner">
-      <img class="marathon-rail__track" src="./assets/progress/track.png" alt="" width="64" height="720" />
-      <img class="marathon-rail__runner" src="./assets/progress/runner-side.png" alt="主人公沿跑道前进" width="44" />
+      <img class="marathon-rail__track" src="assets/progress/track.png" alt="" width="64" height="720" />
+      <img class="marathon-rail__runner" src="assets/progress/runner-side.png" alt="主人公沿跑道前进" width="44" />
       <ol class="marathon-rail__marks" aria-label="章节里程点"></ol>
     </div>
   </aside>
 
   <aside class="stage-vignette" aria-live="polite">
     <div class="stage-vignette__card">
-      <img class="stage-vignette__img" src="./assets/progress/stage-1.png" alt="" width="200" height="267" />
+      <img class="stage-vignette__img" src="assets/progress/stage-1.png" alt="" width="200" height="267" />
       <p class="stage-vignette__label">
         <span class="stage-vignette__eyebrow">此刻 · 主人公</span>
         <span class="stage-vignette__text">中签</span>
@@ -56,9 +63,9 @@
       <div class="cover-sticky">
         <div class="cover-sky" aria-hidden="true"></div>
         <div class="cover-runners" aria-hidden="true">
-          <img src="./assets/images/1.png" alt="" width="1600" height="1066" fetchpriority="high" decoding="async" />
+          <img src="assets/images/1.png" alt="" width="1600" height="1066" fetchpriority="high" decoding="async" />
         </div>
-        <img class="cover-title-art" src="./assets/images/3.jpg" alt="" width="1600" height="1066" fetchpriority="high" decoding="async" aria-hidden="true" />
+        <img class="cover-title-art" src="assets/images/3.jpg" alt="" width="1600" height="1066" fetchpriority="high" decoding="async" aria-hidden="true" />
         <div class="cover-copy">
           <h1 id="cover-title" class="sr-only">跑一场42.195公里的马拉松，到底有多难？</h1>
         </div>
@@ -85,7 +92,7 @@
 
         <!-- 小教练在手机上方 -->
         <div class="ma-coach-above">
-          <img src="./assets/advisor/robot-coach.png" alt="小教练" class="ma-coach-img floaty" width="96" height="96" />
+          <img src="assets/advisor/robot-coach.png" alt="小教练" class="ma-coach-img floaty" width="96" height="96" />
           <div class="ma-speech">
             <strong>小教练：</strong>别急着报名，先看看你在哪一站。
           </div>
@@ -100,8 +107,8 @@
             <div class="ma-phone-top" aria-hidden="true">
               <div class="ma-ear"></div>
               <div class="ma-bezel-deco ma-bezel-deco-top">
-                <img src="./assets/advisor/icons/icon-map.png" alt="" />
-                <img src="./assets/advisor/icons/icon-shoe.png" alt="" />
+                <img src="assets/advisor/icons/icon-map.png" alt="" />
+                <img src="assets/advisor/icons/icon-shoe.png" alt="" />
               </div>
             </div>
 
@@ -113,7 +120,7 @@
               <!-- Step 1 -->
               <div class="ma-step is-active" data-step="1" id="maStep1">
                 <div class="ma-step-inner">
-                  <img src="./assets/advisor/robot-coach.png" alt="" class="ma-welcome-avatar floaty" width="72" height="72" />
+                  <img src="assets/advisor/robot-coach.png" alt="" class="ma-welcome-avatar floaty" width="72" height="72" />
                   <h2 class="ma-step-title">AI跑马顾问</h2>
                   <p class="ma-step-sub">你的42.195公里入场报告</p>
                   <p class="ma-step-copy">不是每个人都要立刻跑全马，但每个人都可以找到适合自己的起跑方式。</p>
@@ -314,7 +321,7 @@
               <!-- Step 3 -->
               <div class="ma-step" data-step="3" id="maStep3" hidden>
                 <div class="ma-step-inner ma-generating">
-                  <img src="./assets/advisor/robot-coach.png" alt="" class="ma-gen-coach floaty" width="64" height="64" />
+                  <img src="assets/advisor/robot-coach.png" alt="" class="ma-gen-coach floaty" width="64" height="64" />
                   <ul class="ma-gen-msgs" id="maGenMsgs" aria-live="polite">
                     <li>正在评估你的起点……</li>
                     <li>正在匹配赛事门槛……</li>
@@ -370,8 +377,8 @@
 
             <div class="ma-phone-bottom" aria-hidden="true">
               <div class="ma-bezel-deco ma-bezel-deco-bottom">
-                <img src="./assets/advisor/icons/icon-bib.png" alt="" />
-                <img src="./assets/advisor/icons/icon-heart.png" alt="" />
+                <img src="assets/advisor/icons/icon-bib.png" alt="" />
+                <img src="assets/advisor/icons/icon-heart.png" alt="" />
               </div>
               <div class="ma-home"></div>
             </div>
@@ -386,7 +393,7 @@
             <article class="ma-a4-sheet" id="maA4Sheet">
               <header class="ma-a4-letterhead">
                 <div class="ma-a4-brand">
-                  <img src="./assets/advisor/robot-coach.png" alt="" width="44" height="44" />
+                  <img src="assets/advisor/robot-coach.png" alt="" width="44" height="44" />
                   <div>
                     <p class="ma-a4-org">AI跑马顾问 · 入场评估</p>
                     <h2>我的42.195公里入场报告</h2>
@@ -422,7 +429,7 @@
           <span class="ending-sun"></span>
           <span class="ending-road-line ending-road-line--one"></span>
           <span class="ending-road-line ending-road-line--two"></span>
-          <img class="ending-runner" src="./assets/progress/runner-side.png" alt="" width="88" />
+          <img class="ending-runner" src="assets/progress/runner-side.png" alt="" width="88" />
         </div>
 
         <div class="ending-layer ending-layer--review" aria-label="五章回顾">
@@ -512,17 +519,17 @@
 
   <!-- 数据与叙事逻辑已内嵌于 story.js（无 fetch） -->
   <!-- video-titles(~1MB) 由 story.js 空闲后异步加载，避免堵住首屏 -->
-  <script src="./js/data/story-data.js"></script>
-  <script src="./js/data/chapter1-data.js"></script>
-  <script src="./js/data/chapter2-content.js"></script>
-  <script src="./js/data/china-geo.js"></script>
-  <script src="./js/story.js"></script>
+  <script src="js/data/story-data.js"></script>
+  <script src="js/data/chapter1-data.js"></script>
+  <script src="js/data/chapter2-content.js"></script>
+  <script src="js/data/china-geo.js"></script>
+  <script src="js/story.js"></script>
   <!-- 四五章 / 顾问 / 进度条：必须同步按序执行，否则章节会空白 -->
-  <script src="./js/data/chapter4-data.js"></script>
-  <script src="./js/data/chapter5-data.js"></script>
-  <script src="./js/vendor/chapter45.js"></script>
-  <script src="./js/interactions/advisor.js"></script>
-  <script src="./js/interactions/progress.js"></script>
-  <script src="./js/app.js"></script>
+  <script src="js/data/chapter4-data.js"></script>
+  <script src="js/data/chapter5-data.js"></script>
+  <script src="js/vendor/chapter45.js"></script>
+  <script src="js/interactions/advisor.js"></script>
+  <script src="js/interactions/progress.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
