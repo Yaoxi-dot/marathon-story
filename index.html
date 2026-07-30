@@ -25,8 +25,27 @@
   </script>
   <link rel="preload" as="image" href="assets/images/1.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/images/3.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/images/phone-frame-original-transparent.png" fetchpriority="high" />
+  <link rel="preload" as="font" href="assets/fonts/ZCOOLXiaoWei-Regular.ttf" type="font/ttf" crossorigin />
   <!-- 离线字体：恢复同步加载，保证标题字体立刻可用 -->
   <link rel="stylesheet" href="css/fonts.css" />
+  <style>
+    /* Mirror face rules with base-relative URLs so fonts still resolve if css path is flaky */
+    @font-face {
+      font-family: "ZCOOL XiaoWei";
+      src: url("assets/fonts/ZCOOLXiaoWei-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/JetBrainsMono-Regular.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
   <link rel="stylesheet" href="css/tokens.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/story.css" />

@@ -91,12 +91,24 @@ function createPhoneSection(chapter, titles) {
   const sticky = document.createElement('div');
   sticky.className = 'phone-sticky';
   sticky.append(createInformationFlow(titles));
-  const videoSrc = encodeURI(chapter.video || './assets/video/intro-douyin-feed.mp4');
-  const posterSrc = encodeURI('./assets/images/intro-video-poster.jpg');
+  function resolveAsset(path, fallback) {
+    const raw = String(path || fallback || '').replace(/^\.\//, '');
+    try { return new URL(raw, document.baseURI).href; }
+    catch (e) { return raw; }
+  }
+  const videoSrc = resolveAsset(chapter.video, 'assets/video/intro-douyin-feed.mp4');
+  const posterSrc = resolveAsset('assets/images/intro-video-poster.jpg');
+  let phoneImageSrc = chapter.phoneImage || 'assets/images/phone-frame-original-transparent.png';
+  try {
+    phoneImageSrc = new URL(String(phoneImageSrc).replace(/^\.\//, ''), document.baseURI).href;
+  } catch (e) {
+    phoneImageSrc = String(phoneImageSrc).replace(/^\.\//, '');
+  }
+
   sticky.insertAdjacentHTML('beforeend', `
     <div class="phone-source">来自 ${titles.length.toLocaleString()} 条高赞视频标题</div>
     <div class="phone-device" aria-label="播放马拉松短视频的手绘手机">
-      <img class="phone-device-shell" src="${chapter.phoneImage}" alt="手绘马拉松主题手机">
+      <img class="phone-device-shell" src="${phoneImageSrc}" alt="手绘马拉松主题手机" width="940" height="1670" decoding="async" fetchpriority="high">
       <video class="phone-device-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="${posterSrc}" aria-label="马拉松短视频">
         <source src="${videoSrc}" type="video/mp4">
       </video>
@@ -133,6 +145,12 @@ function createPhoneSection(chapter, titles) {
     </div>
   `);
   section.append(sticky);
+
+  // Guard against accidental duplicate chart nodes (keep the centered conclusion card only)
+  const chartBeats = sticky.querySelectorAll('[data-phone-chart]');
+  chartBeats.forEach((node, index) => {
+    if (index > 0) node.remove();
+  });
 
   const chartBeat = sticky.querySelector('[data-phone-chart]');
   const lineEl = chartBeat.querySelector('.phone-chart-line');
@@ -1880,7 +1898,7 @@ function createChapter3(chapter) {
           <div class="calc-align-spacer" aria-hidden="true"></div>
 
           <div class="cute-calc" id="cuteCalc">
-            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.jpg" alt="手绘计算器" width="280" height="292" decoding="async" fetchpriority="low" />
+            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.png" alt="手绘计算器" width="280" height="292" decoding="async" fetchpriority="low" />
             <div class="calc-screen-overlay">
               <div class="calc-screen-label">TOTAL</div>
               <p class="calc-idle-face-msg" id="calcIdleFace">点左边层级<br>算出花费</p>
@@ -1899,18 +1917,10 @@ function createChapter3(chapter) {
   const calcImg = section.querySelector("#cuteCalc .cute-calc-img, .cute-calc-img");
   if (calcImg) {
     try {
-      calcImg.src = new URL("assets/chapter3/calculator-cute-blank.jpg", document.baseURI).href;
+      calcImg.src = new URL("assets/chapter3/calculator-cute-blank.png", document.baseURI).href;
     } catch (e) {
-      calcImg.src = "assets/chapter3/calculator-cute-blank.jpg";
+      calcImg.src = "assets/chapter3/calculator-cute-blank.png";
     }
-    calcImg.addEventListener("error", function onCalcErr() {
-      calcImg.removeEventListener("error", onCalcErr);
-      try {
-        calcImg.src = new URL("assets/chapter3/calculator-cute-blank.png", document.baseURI).href;
-      } catch (err) {
-        calcImg.src = "assets/chapter3/calculator-cute-blank.png";
-      }
-    });
   }
   queueMicrotask(() => initChapter3());
   return section;
