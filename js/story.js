@@ -1,6 +1,6 @@
 /* Data globals loaded from ./js/data/*.js */
 var STORY_DATA = window.STORY_DATA;
-var VIDEO_TITLES = window.VIDEO_TITLES;
+var VIDEO_TITLES = window.VIDEO_TITLES || [];
 var CHAPTER1_DATA = window.CHAPTER1_DATA;
 var CHAPTER2_DATA = window.CHAPTER2_DATA;
 var CHAPTER2_CONTENT = window.CHAPTER2_CONTENT;
@@ -97,9 +97,7 @@ function createPhoneSection(chapter, titles) {
     <div class="phone-source">来自 ${titles.length.toLocaleString()} 条高赞视频标题</div>
     <div class="phone-device" aria-label="播放马拉松短视频的手绘手机">
       <img class="phone-device-shell" src="${chapter.phoneImage}" alt="手绘马拉松主题手机">
-      <video class="phone-device-video" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="${posterSrc}" aria-label="马拉松短视频">
-        <source src="${videoSrc}" type="video/mp4">
-      </video>
+      <video class="phone-device-video" muted loop playsinline webkit-playsinline preload="none" poster="${posterSrc}" data-src="${videoSrc}" aria-label="马拉松短视频"></video>
     </div>
     <div class="phone-conclusion" aria-live="polite">
       <div class="phone-beat phone-chart-beat" data-phone-chart>
@@ -153,25 +151,37 @@ function createPhoneSection(chapter, titles) {
 
   section.phoneController = { drawChart, resetChart };
 
-  // Ensure intro video plays (file:// + autoplay edge cases)
+  // Lazy-load intro video only when near viewport (avoid 11MB blocking first paint)
   const videoEl = sticky.querySelector('.phone-device-video');
   if (videoEl) {
     videoEl.muted = true;
     videoEl.defaultMuted = true;
     videoEl.setAttribute('muted', '');
+    let sourceAttached = false;
+    const attachSource = () => {
+      if (sourceAttached) return;
+      const src = videoEl.getAttribute('data-src');
+      if (!src) return;
+      sourceAttached = true;
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      videoEl.appendChild(source);
+      videoEl.load();
+    };
     const tryPlay = () => {
+      attachSource();
       const p = videoEl.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
     };
     videoEl.addEventListener('loadeddata', tryPlay, { once: true });
     videoEl.addEventListener('canplay', tryPlay, { once: true });
-    tryPlay();
-    // Retry when section enters view
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) tryPlay();
+        else if (!videoEl.paused) videoEl.pause();
       });
-    }, { threshold: 0.2 });
+    }, { rootMargin: '200px 0px', threshold: 0.15 });
     io.observe(section);
   }
 
@@ -2015,7 +2025,56 @@ function observeStorySections(root) {
     const storyRoot = document.querySelector('#story');
     document.title = STORY_DATA.project.title;
     const READY_CHAPTERS = new Set(['cover', 'discovery', 'lottery', 'travel', 'spending']);
+
+    // Keep first paint on the cover; avoid browser restoring a mid-page scroll into 入场报告
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+    window.scrollTo(0, 0);
+
     storyRoot.replaceChildren(...STORY_DATA.chapters.filter((c) => READY_CHAPTERS.has(c.id)).map((chapter) => createChapterShell(chapter, VIDEO_TITLES, CHAPTER1_DATA, CHAPTER2_DATA, CHINA_GEO_JSON)));
     observeStorySections(storyRoot);
 
-    
+    document.documentElement.classList.remove('is-booting');
+    document.documentElement.classList.add('is-story-ready');
+
+    function refreshPhoneTitles(titles) {
+      const phoneSection = storyRoot.querySelector('.story-chapter--phone');
+      if (!phoneSection || !Array.isArray(titles) || !titles.length) return;
+      const sticky = phoneSection.querySelector('.phone-sticky');
+      if (!sticky) return;
+      const oldFlow = sticky.querySelector('.information-flow');
+      if (oldFlow) oldFlow.replaceWith(createInformationFlow(titles));
+      else sticky.prepend(createInformationFlow(titles));
+      const source = sticky.querySelector('.phone-source');
+      if (source) source.textContent = `来自 ${titles.length.toLocaleString()} 条高赞视频标题`;
+    }
+
+    function loadScriptOnce(src) {
+      return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[data-dynamic-src="${src}"]`)) {
+          resolve();
+          return;
+        }
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.dataset.dynamicSrc = src;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('Failed to load ' + src));
+        document.body.appendChild(s);
+      });
+    }
+
+    // Load ~1MB title corpus after first paint / idle time
+    const scheduleIdle = window.requestIdleCallback
+      ? (cb) => window.requestIdleCallback(cb, { timeout: 1800 })
+      : (cb) => window.setTimeout(cb, 400);
+    scheduleIdle(() => {
+      loadScriptOnce('./js/data/video-titles.js')
+        .then(() => {
+          VIDEO_TITLES = window.VIDEO_TITLES || VIDEO_TITLES || [];
+          refreshPhoneTitles(VIDEO_TITLES);
+        })
+        .catch(() => {});
+    });
+
+
