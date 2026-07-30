@@ -511,18 +511,18 @@
 </section>
 
   <!-- 数据与叙事逻辑已内嵌于 story.js（无 fetch） -->
-  <!-- 首屏关键：先挂载封面与前几章；近 1MB 的 video-titles 由 story.js 空闲后异步加载 -->
+  <!-- video-titles(~1MB) 由 story.js 空闲后异步加载，避免堵住首屏 -->
   <script src="./js/data/story-data.js"></script>
   <script src="./js/data/chapter1-data.js"></script>
   <script src="./js/data/chapter2-content.js"></script>
   <script src="./js/data/china-geo.js"></script>
   <script src="./js/story.js"></script>
-  <!-- 后半段 defer：首屏脚本跑完后再执行，减少挡住第一屏 -->
-  <script src="./js/data/chapter4-data.js" defer></script>
-  <script src="./js/data/chapter5-data.js" defer></script>
-  <script src="./js/vendor/chapter45.js" defer></script>
-  <script src="./js/interactions/advisor.js" defer></script>
-  <script src="./js/interactions/progress.js" defer></script>
-  <script src="./js/app.js" defer></script>
+  <!-- 四五章 / 顾问 / 进度条：必须同步按序执行，否则章节会空白 -->
+  <script src="./js/data/chapter4-data.js"></script>
+  <script src="./js/data/chapter5-data.js"></script>
+  <script src="./js/vendor/chapter45.js"></script>
+  <script src="./js/interactions/advisor.js"></script>
+  <script src="./js/interactions/progress.js"></script>
+  <script src="./js/app.js"></script>
 </body>
 </html>

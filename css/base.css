@@ -2,15 +2,3 @@
 html { scroll-behavior: smooth; }
 body { margin: 0; font-family: var(--font-body); color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-
-/* Boot: keep below-the-fold blocks from flashing before story mounts */
-html.is-booting #chapter45-root,
-html.is-booting #advisor-section,
-html.is-booting #ending {
-  visibility: hidden;
-}
-html.is-story-ready #chapter45-root,
-html.is-story-ready #advisor-section,
-html.is-story-ready #ending {
-  visibility: visible;
-}

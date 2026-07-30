@@ -2021,11 +2021,30 @@ function observeStorySections(root) {
     try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
     window.scrollTo(0, 0);
 
-    storyRoot.replaceChildren(...STORY_DATA.chapters.filter((c) => READY_CHAPTERS.has(c.id)).map((chapter) => createChapterShell(chapter, VIDEO_TITLES, CHAPTER1_DATA, CHAPTER2_DATA, CHINA_GEO_JSON)));
-    observeStorySections(storyRoot);
-
-    document.documentElement.classList.remove('is-booting');
-    document.documentElement.classList.add('is-story-ready');
+    try {
+      const nodes = STORY_DATA.chapters
+        .filter((c) => READY_CHAPTERS.has(c.id))
+        .map((chapter) => {
+          try {
+            return createChapterShell(chapter, VIDEO_TITLES, CHAPTER1_DATA, CHAPTER2_DATA, CHINA_GEO_JSON);
+          } catch (err) {
+            console.error('[story] chapter failed:', chapter.id, err);
+            const fallback = document.createElement('section');
+            fallback.className = 'story-chapter';
+            fallback.id = chapter.id;
+            fallback.dataset.chapter = chapter.id;
+            fallback.innerHTML = `<div class="chapter-inner"><h1>${chapter.headline || chapter.id}</h1><p class="chapter-status">本章加载失败，请刷新重试</p></div>`;
+            return fallback;
+          }
+        });
+      storyRoot.replaceChildren(...nodes);
+      observeStorySections(storyRoot);
+    } catch (err) {
+      console.error('[story] mount failed:', err);
+    } finally {
+      document.documentElement.classList.remove('is-booting');
+      document.documentElement.classList.add('is-story-ready');
+    }
 
     function refreshPhoneTitles(titles) {
       const phoneSection = storyRoot.querySelector('.story-chapter--phone');
