@@ -100,7 +100,7 @@ body::before {
 
 /* Phone section — an information tide drawn from the supplied spreadsheet */
 .story-chapter--phone { --phone-progress: 0; min-height: 460svh; display: block; padding: 0; overflow: clip; position: relative; background: transparent; border: 0; }
-.phone-sticky { position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; background: radial-gradient(circle at 50% 42%, rgba(249,242,230,.78) 0 14%, rgba(184,221,240,.62) 46%, rgba(175,211,223,.82) 100%); }
+.phone-sticky { position: sticky; top: 0; height: 100svh; overflow: visible; isolation: isolate; background: radial-gradient(circle at 50% 42%, rgba(249,242,230,.78) 0 14%, rgba(184,221,240,.62) 46%, rgba(175,211,223,.82) 100%); }
 /* Soft fog into chapter 1 — no hard paper cut */
 .story-chapter--phone > .chapter-seam--exit {
   color: rgba(184,221,240,.9);
@@ -115,7 +115,7 @@ body::before {
 .story-chapter--phone.is-settling .information-flow span { animation-play-state: paused; opacity: clamp(0, calc((1 - var(--phone-progress)) * 1.8), .12); }
 .phone-source { position: absolute; z-index: 2; top: 4vh; left: 50%; transform: translateX(-50%); color: #5e8890; font-size: clamp(.66rem, .9vw, .78rem); letter-spacing: .12em; opacity: clamp(0, calc((var(--phone-progress) - .16) * 4), .88); white-space: nowrap; }
 .phone-device { position: absolute; z-index: 3; left: 50%; top: 50%; width: min(42vw, 400px); aspect-ratio: 941 / 1672; transform: translate(-50%, calc(-50% + var(--phone-progress) * -5vh)) scale(calc(1 - var(--phone-progress) * .36)); transform-origin: center; filter: drop-shadow(0 22px 24px rgba(33,74,133,.18)); will-change: transform; }
-.phone-device-shell { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.phone-device-shell { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .phone-device-video { position: absolute; z-index: 2; left: 17.5%; top: 14.3%; width: 65%; height: 70.7%; object-fit: cover; border-radius: 8% 8% 9% 9%; background: #214a85; }
 
 /* Intro: chart beat → vow beat */
@@ -2290,6 +2290,8 @@ body::before {
       display: block;
       pointer-events: none;
       user-select: none;
+      min-height: 180px;
+      background: rgba(250,247,240,.65);
     }
     .story-chapter--chapter3 .calc-screen-overlay{
       position: absolute;

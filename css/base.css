@@ -7,5 +7,10 @@ body { margin: 0; font-family: var(--font-body); color: var(--ink); }
 html.is-booting #chapter45-root,
 html.is-booting #advisor-section,
 html.is-booting #ending {
-  content-visibility: hidden;
+  visibility: hidden;
+}
+html.is-story-ready #chapter45-root,
+html.is-story-ready #advisor-section,
+html.is-story-ready #ending {
+  visibility: visible;
 }

@@ -5,11 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="跑一场马拉松到底有多难：数据看中国新兴运动的入场门槛（纯静态本地版）" />
   <title>跑一场马拉松到底有多难</title>
+  <script>
+    /* GitHub Pages 项目页：补上末尾 /，避免 ./assets 解析到仓库外 */
+    (function () {
+      if (location.protocol === 'file:') return;
+      var path = location.pathname;
+      if (/\/index\.html?$/i.test(path)) return;
+      if (!path.endsWith('/') && !/\.[a-z0-9]+$/i.test(path.split('/').pop() || '')) {
+        location.replace(path + '/' + location.search + location.hash);
+      }
+    })();
+  </script>
   <link rel="preload" as="image" href="./assets/images/1.png" fetchpriority="high" />
   <link rel="preload" as="image" href="./assets/images/3.jpg" fetchpriority="high" />
-  <!-- 字体非首屏关键：异步加载，避免大字体抢带宽 -->
-  <link rel="stylesheet" href="./css/fonts.css" media="print" onload="this.media='all'" />
-  <noscript><link rel="stylesheet" href="./css/fonts.css" /></noscript>
+  <!-- 离线字体：恢复同步加载，保证标题字体立刻可用 -->
+  <link rel="stylesheet" href="./css/fonts.css" />
   <link rel="stylesheet" href="./css/tokens.css" />
   <link rel="stylesheet" href="./css/base.css" />
   <link rel="stylesheet" href="./css/story.css" />

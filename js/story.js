@@ -97,7 +97,9 @@ function createPhoneSection(chapter, titles) {
     <div class="phone-source">来自 ${titles.length.toLocaleString()} 条高赞视频标题</div>
     <div class="phone-device" aria-label="播放马拉松短视频的手绘手机">
       <img class="phone-device-shell" src="${chapter.phoneImage}" alt="手绘马拉松主题手机">
-      <video class="phone-device-video" muted loop playsinline webkit-playsinline preload="none" poster="${posterSrc}" data-src="${videoSrc}" aria-label="马拉松短视频"></video>
+      <video class="phone-device-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="${posterSrc}" aria-label="马拉松短视频">
+        <source src="${videoSrc}" type="video/mp4">
+      </video>
     </div>
     <div class="phone-conclusion" aria-live="polite">
       <div class="phone-beat phone-chart-beat" data-phone-chart>
@@ -151,38 +153,27 @@ function createPhoneSection(chapter, titles) {
 
   section.phoneController = { drawChart, resetChart };
 
-  // Lazy-load intro video only when near viewport (avoid 11MB blocking first paint)
+  // Ensure intro video plays when the phone enters view (observe sticky device, not the tall section)
   const videoEl = sticky.querySelector('.phone-device-video');
+  const phoneDevice = sticky.querySelector('.phone-device');
   if (videoEl) {
     videoEl.muted = true;
     videoEl.defaultMuted = true;
     videoEl.setAttribute('muted', '');
-    let sourceAttached = false;
-    const attachSource = () => {
-      if (sourceAttached) return;
-      const src = videoEl.getAttribute('data-src');
-      if (!src) return;
-      sourceAttached = true;
-      const source = document.createElement('source');
-      source.src = src;
-      source.type = 'video/mp4';
-      videoEl.appendChild(source);
-      videoEl.load();
-    };
     const tryPlay = () => {
-      attachSource();
       const p = videoEl.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
     };
-    videoEl.addEventListener('loadeddata', tryPlay, { once: true });
-    videoEl.addEventListener('canplay', tryPlay, { once: true });
+    videoEl.addEventListener('loadeddata', tryPlay);
+    videoEl.addEventListener('canplay', tryPlay);
+    tryPlay();
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) tryPlay();
         else if (!videoEl.paused) videoEl.pause();
       });
-    }, { rootMargin: '200px 0px', threshold: 0.15 });
-    io.observe(section);
+    }, { rootMargin: '120px 0px', threshold: 0.01 });
+    io.observe(phoneDevice || sticky);
   }
 
   const exitSeam = document.createElement('div');
