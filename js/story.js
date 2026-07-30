@@ -1435,7 +1435,8 @@ function createChapter2(chapter, data, chinaGeoJson) {
 
 function initChapter3() {
 
-      const ICON = "assets/chapter3/receipt-icons";
+      const ICON = new URL("assets/chapter3/receipt-icons/", document.baseURI).href.replace(/\/$/, "");
+      const CALC_IMG = new URL("assets/chapter3/calculator-cute-blank.png", document.baseURI).href;
 
       const HARD_ITEMS = [
         { icon: "hard-shoes.png", name: "跑鞋", note: "性价比→碳板款", price: "¥300 – 3,000+" },
@@ -1472,6 +1473,8 @@ function initChapter3() {
 
       renderList(document.getElementById("hardList"), HARD_ITEMS);
       renderList(document.getElementById("softList"), SOFT_ITEMS);
+      const calcImgEl = document.querySelector("#cuteCalc .cute-calc-img");
+      if (calcImgEl) calcImgEl.src = CALC_IMG;
 
       function bindStation(stationId, btnId, receiptId) {
         const station = document.getElementById(stationId);
@@ -1609,7 +1612,7 @@ function initChapter3() {
         calcList.innerHTML = data.items.map(function (it) {
           return (
             '<div class="calc-item">' +
-              '<div class="item-icon"><img src="' + ICON + '/' + it.icon + '" alt="' + it.name + '" loading="lazy" decoding="async" width="44" height="44" /></div>' +
+              '<div class="item-icon"><img src="' + ICON + '/' + it.icon + '" alt="' + it.name + '" decoding="async" width="44" height="44" /></div>' +
               '<div class="item-name">' + it.name + '<small>' + it.note + '</small></div>' +
               '<div class="item-price">' + formatYen(it.price) + '</div>' +
             '</div>'
@@ -1873,7 +1876,7 @@ function createChapter3(chapter) {
           <div class="calc-align-spacer" aria-hidden="true"></div>
 
           <div class="cute-calc" id="cuteCalc">
-            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.png" loading="lazy" decoding="async" alt="手绘计算器" width="280" height="292" />
+            <img class="cute-calc-img" src="assets/chapter3/calculator-cute-blank.png" decoding="async" alt="手绘计算器" width="280" height="292" />
             <div class="calc-screen-overlay">
               <div class="calc-screen-label">TOTAL</div>
               <p class="calc-idle-face-msg" id="calcIdleFace">点左边层级<br>算出花费</p>

@@ -2228,7 +2228,11 @@ body::before {
       opacity: 0;
       transform: translateY(6px);
     }
-    .story-chapter--chapter3 .tier-popup.is-open .calc-item{ animation: itemIn .4s ease forwards; }
+    .story-chapter--chapter3 .tier-popup.is-open .calc-item{
+      animation: itemIn .4s ease forwards;
+      opacity: 1;
+      transform: translateY(0);
+    }
     .story-chapter--chapter3 .tier-popup.is-open .calc-item:nth-child(1){ animation-delay: .05s; }
     .story-chapter--chapter3 .tier-popup.is-open .calc-item:nth-child(2){ animation-delay: .1s; }
     .story-chapter--chapter3 .tier-popup.is-open .calc-item:nth-child(3){ animation-delay: .15s; }
@@ -2239,7 +2243,7 @@ body::before {
     .story-chapter--chapter3 .tier-popup.is-open .calc-item:nth-child(8){ animation-delay: .4s; }
     .story-chapter--chapter3 .tier-popup.is-open .calc-item:nth-child(9){ animation-delay: .45s; }
     .story-chapter--chapter3 .tier-popup-list .item-icon{ width: 40px; height: 40px; border-radius: 10px; }
-    .story-chapter--chapter3 .tier-popup-list .item-icon img{ width: 36px; height: 36px; }
+    .story-chapter--chapter3 .tier-popup-list .item-icon img{ width: 36px; height: 36px; display:block; object-fit:contain; opacity:1; }
     .story-chapter--chapter3 .tier-popup-list .item-name{ font-size: 12px; }
     .story-chapter--chapter3 .tier-popup-list .item-name small{ font-size: 9.5px; }
     .story-chapter--chapter3 .tier-popup-list .item-price{
@@ -3084,7 +3088,6 @@ html.embed-mode .story-chapter--chapter2 { min-height: calc(var(--embed-vh) * 4.
 /* Smoothness: skip painting far-off narrative chapters until near viewport */
 .story-chapter--chapter1,
 .story-chapter--chapter2,
-.story-chapter--chapter3,
 #ending {
   content-visibility: auto;
   contain-intrinsic-size: 1px 1400px;
